@@ -1,0 +1,211 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Testify — "Ink & Ledger" design system
+   Warm paper surfaces, ink typography (Fraunces display / Archivo UI /
+   JetBrains Mono data), forest-green primary, persimmon live-signal accent,
+   hairline rules and hard offset shadows instead of soft blur.
+   ========================================================================== */
+
+@layer base {
+  :root {
+    /* Parchment (light) */
+    --background: 42 38% 93%;
+    --foreground: 40 19% 8%;
+    --card: 45 45% 97%;
+    --card-foreground: 40 19% 8%;
+    --popover: 45 45% 97%;
+    --popover-foreground: 40 19% 8%;
+    --primary: 158 47% 23%;
+    --primary-foreground: 45 45% 96%;
+    --secondary: 42 25% 86%;
+    --secondary-foreground: 40 19% 12%;
+    --accent: 22 76% 44%;
+    --accent-foreground: 45 45% 97%;
+    --muted: 43 30% 88%;
+    --muted-foreground: 38 11% 36%;
+    --destructive: 6 66% 38%;
+    --destructive-foreground: 45 45% 97%;
+    --success: 152 44% 30%;
+    --success-foreground: 45 45% 97%;
+    --warning: 34 74% 34%;
+    --warning-foreground: 45 45% 97%;
+    --border: 41 26% 79%;
+    --input: 40 22% 72%;
+    --ring: 158 47% 26%;
+    --radius: 0.5rem;
+    --shadow-hard: 40 19% 8%;
+
+    --sidebar: 43 36% 91%;
+    --sidebar-foreground: 40 15% 20%;
+    --sidebar-muted: 38 11% 42%;
+    --sidebar-active: 158 47% 23%;
+    --sidebar-border: 41 24% 80%;
+  }
+
+  .dark {
+    /* The study (dark) — warm ink-green, cream text */
+    --background: 150 14% 6%;
+    --foreground: 43 38% 90%;
+    --card: 146 12% 10%;
+    --card-foreground: 43 38% 90%;
+    --popover: 146 13% 9%;
+    --popover-foreground: 43 38% 90%;
+    --primary: 152 30% 62%;
+    --primary-foreground: 150 16% 7%;
+    --secondary: 148 9% 17%;
+    --secondary-foreground: 43 30% 86%;
+    --accent: 22 74% 58%;
+    --accent-foreground: 150 16% 7%;
+    --muted: 148 10% 14%;
+    --muted-foreground: 42 14% 62%;
+    --destructive: 6 62% 56%;
+    --destructive-foreground: 150 16% 7%;
+    --success: 152 34% 55%;
+    --success-foreground: 150 16% 7%;
+    --warning: 38 78% 56%;
+    --warning-foreground: 150 16% 7%;
+    --border: 147 9% 19%;
+    --input: 147 9% 24%;
+    --ring: 152 30% 62%;
+    --shadow-hard: 150 20% 3%;
+
+    --sidebar: 149 13% 7%;
+    --sidebar-foreground: 43 28% 84%;
+    --sidebar-muted: 42 12% 55%;
+    --sidebar-active: 152 32% 64%;
+    --sidebar-border: 147 9% 15%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "ss01";
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    @apply tracking-tight;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: hsl(158 47% 26% / 0.25);
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--foreground) / 0.22);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--foreground) / 0.4);
+    background-clip: content-box;
+    border: 2px solid transparent;
+  }
+}
+
+@layer components {
+  /* Expanded-caps micro label — the editorial "eyebrow". */
+  .eyebrow {
+    font-family: Archivo, ui-sans-serif, system-ui, sans-serif;
+    font-stretch: 125%;
+    font-weight: 700;
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  /* Heavy top rule above a section heading — ledger style. */
+  .rule-top {
+    border-top: 2px solid hsl(var(--foreground));
+  }
+
+  .score-mono {
+    @apply font-mono tabular-nums tracking-tight;
+  }
+
+  .card-hover {
+    @apply transition-all duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-press-sm hover:border-foreground/40;
+  }
+
+  /* Subtle warm dot grids (paper + study variants keep their old names). */
+  .bg-grid-light {
+    background-image: radial-gradient(circle at 1px 1px, hsl(40 19% 8% / 0.1) 1px, transparent 0);
+    background-size: 26px 26px;
+  }
+  .bg-grid-dark {
+    background-image: radial-gradient(circle at 1px 1px, hsl(43 38% 90% / 0.07) 1px, transparent 0);
+    background-size: 26px 26px;
+  }
+
+  /* Faint paper grain (used sparingly — hero panels only). */
+  .texture-paper {
+    position: relative;
+  }
+  .texture-paper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@layer utilities {
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-400 { animation-delay: 400ms; }
+  .animation-delay-500 { animation-delay: 500ms; }
+  .animation-delay-700 { animation-delay: 700ms; }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Printable report: strip chrome, keep content */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+  }
+  .print-page {
+    box-shadow: none !important;
+    border: none !important;
+  }
+  @page {
+    margin: 14mm;
+  }
+}

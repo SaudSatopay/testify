@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='28' height='28' rx='7' fill='%23205741'/%3E%3Crect x='5' y='5' width='22' height='22' rx='4.5' fill='none' stroke='%23F6F0E2' stroke-opacity='0.35' stroke-width='1.4'/%3E%3Cpath d='M9.5 16.4l4.4 4.6 8.6-9.6' fill='none' stroke='%23F6F0E2' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Testify — AI-powered interviews, mock interviews, MCQ assessments and candidate evaluation. Smarter Interviews. Better Decisions."
+    />
+    <meta property="og:title" content="Testify — Smarter Interviews. Better Decisions." />
+    <meta
+      property="og:description"
+      content="Conduct smarter interviews, evaluate candidates consistently, and help candidates improve with AI-powered interview analysis."
+    />
+    <meta property="og:type" content="website" />
+    <title>Testify — Smarter Interviews. Better Decisions.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Archivo:wdth,wght@62.5..125,100..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // Apply persisted theme before first paint to avoid a flash of the wrong theme.
+      (function () {
+        try {
+          var t = localStorage.getItem("testify-theme");
+          if (t === "dark" || (t !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

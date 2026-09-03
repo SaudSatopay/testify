@@ -1,0 +1,27 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+dist-ssr
+
+# Local env files — never commit secrets
+.env
+.env.local
+.env.*.local
+
+# Supabase local dev
+supabase/.temp
+supabase/.branches
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.local
+*.log
+
+.vercel
+.env*
+!.env.example
