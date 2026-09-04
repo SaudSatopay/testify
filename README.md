@@ -87,6 +87,8 @@ cp .env.example .env          # add your Supabase URL + anon key
 npm run dev
 ```
 
+**On Windows?** Just double-click [`start-testify.bat`](start-testify.bat) — it checks for Node, installs dependencies, creates your `.env` on first run, and opens the app at `localhost:5173`.
+
 **Backend setup** (one-time): apply `supabase/migrations/*.sql` + `supabase/seed.sql` to a Supabase project, deploy the functions in `supabase/functions/`, and set the edge secrets:
 
 | Secret | Purpose |

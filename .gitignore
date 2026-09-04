@@ -14,10 +14,11 @@ dist-ssr
 supabase/.temp
 supabase/.branches
 
-# Editor / OS
+# Editor / OS / AI tooling
 .vscode/*
 !.vscode/extensions.json
 .idea
+.claude/
 .DS_Store
 *.local
 *.log
