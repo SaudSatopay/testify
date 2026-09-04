@@ -74,7 +74,21 @@ export function useSpeechRecognition(lang = "en-US"): SpeechRecognitionState {
       setError("Live transcription is not supported in this browser.");
       return;
     }
-    if (recognitionRef.current) return;
+    // Force-teardown any previous instance (its async onend may not have fired
+    // yet); without this, restarting between questions silently no-ops and the
+    // microphone appears dead.
+    if (recognitionRef.current) {
+      const old = recognitionRef.current;
+      recognitionRef.current = null;
+      old.onresult = null;
+      old.onerror = null;
+      old.onend = null;
+      try {
+        old.abort();
+      } catch {
+        /* already stopped */
+      }
+    }
 
     const recognition = new Ctor();
     recognition.continuous = true;

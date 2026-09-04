@@ -98,7 +98,6 @@ export function MockInterviewSession({
   const questionsRef = useRef(questions);
   questionsRef.current = questions;
   const finishedRef = useRef(false);
-  const spokenIndexRef = useRef(-1);
 
   const { eventCount } = useAssessmentMonitor({
     interviewId: interview.id,
@@ -150,7 +149,7 @@ export function MockInterviewSession({
           return;
         }
         setQuestions([q]);
-        setQPhase("asking");
+        setQPhase("answering");
       })
       .catch(() => {
         if (!cancelled) setFatalError("Couldn't fetch the first question. Check your connection and try again.");
@@ -178,52 +177,87 @@ export function MockInterviewSession({
     };
   }, [videoAnalysisEnabled]);
 
-  /* ---------------- text-to-speech question reading ---------------- */
+  /* ----------------------------------------------------------------
+     Question lifecycle. Answering opens IMMEDIATELY — typing and the
+     submit button never wait on text-to-speech. The question is read
+     aloud in parallel, and the microphone starts listening once TTS
+     finishes (so it doesn't transcribe the interviewer's own voice),
+     with hard failsafes for stalled/broken TTS engines.
+     ---------------------------------------------------------------- */
 
-  const beginAnswering = useCallback(() => {
+  const [ttsSpeaking, setTtsSpeaking] = useState(false);
+  const speechApiRef = useRef(speech);
+  speechApiRef.current = speech;
+  const mediaRef = useRef(media);
+  mediaRef.current = media;
+  const voiceEnabledRef = useRef(voiceEnabled);
+  voiceEnabledRef.current = voiceEnabled;
+  /** Index whose mic listening already started (blocks late TTS guards). */
+  const listenStartedForRef = useRef(-1);
+
+  useEffect(() => {
+    if (!current) return;
+    const questionIndex = current.index;
+
     setQPhase("answering");
     setTypedAnswer("");
-    speech.reset();
-    if (media.stream && media.stream.getAudioTracks().length > 0) {
+    speechApiRef.current.reset();
+    videoSvcRef.current?.reset();
+    if (videoElRef.current) videoSvcRef.current?.start(videoElRef.current);
+
+    const stream = mediaRef.current.stream;
+    if (stream && stream.getAudioTracks().length > 0) {
       try {
         const recorder = new RecorderSession("audio");
-        recorder.start(media.stream);
+        recorder.start(stream);
         recorderRef.current = recorder;
       } catch {
         recorderRef.current = null;
       }
-      speech.start();
     }
-    videoSvcRef.current?.reset();
-    if (videoElRef.current) videoSvcRef.current?.start(videoElRef.current);
-  }, [media.stream, speech]);
 
-  useEffect(() => {
-    if (qPhase !== "asking" || !current) return;
-    if (spokenIndexRef.current === currentIndex) return;
-    spokenIndexRef.current = currentIndex;
+    let disposed = false;
+    const timers: number[] = [];
+    const startListening = () => {
+      if (disposed || listenStartedForRef.current === questionIndex) return;
+      listenStartedForRef.current = questionIndex;
+      setTtsSpeaking(false);
+      const liveStream = mediaRef.current.stream;
+      if (liveStream && liveStream.getAudioTracks().length > 0) {
+        speechApiRef.current.start();
+      }
+    };
 
-    if (voiceEnabled && "speechSynthesis" in window) {
+    if (voiceEnabledRef.current && "speechSynthesis" in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(current.question);
       utterance.rate = 1;
-      let done = false;
-      const proceed = () => {
-        if (!done) {
-          done = true;
-          beginAnswering();
-        }
+      let started = false;
+      utterance.onstart = () => {
+        started = true;
+        if (!disposed) setTtsSpeaking(true);
       };
-      utterance.onend = proceed;
-      utterance.onerror = proceed;
+      utterance.onend = startListening;
+      utterance.onerror = startListening;
+      // Failsafe 1: engine never starts speaking (no voices / muted engine).
+      timers.push(
+        window.setTimeout(() => {
+          if (!started) startListening();
+        }, 2500),
+      );
+      // Failsafe 2: absolute cap so a hung engine can't block the microphone.
+      timers.push(window.setTimeout(startListening, Math.min(25000, current.question.length * 90 + 4000)));
       window.speechSynthesis.speak(utterance);
-      // Safety net if TTS stalls.
-      const fallback = window.setTimeout(proceed, Math.min(20000, current.question.length * 90 + 3000));
-      return () => window.clearTimeout(fallback);
+    } else {
+      startListening();
     }
-    beginAnswering();
-    return undefined;
-  }, [qPhase, current, currentIndex, voiceEnabled, beginAnswering]);
+
+    return () => {
+      disposed = true;
+      timers.forEach((t) => window.clearTimeout(t));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIndex, current?.question]);
 
   useEffect(
     () => () => {
@@ -276,6 +310,11 @@ export function MockInterviewSession({
     async (skipped = false) => {
       if (!current || qPhase !== "answering") return;
       setQPhase("processing");
+      // Silence the interviewer voice and block any pending TTS failsafe from
+      // re-starting the microphone while we process this answer.
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+      listenStartedForRef.current = current.index;
+      setTtsSpeaking(false);
       speech.stop();
 
       const spoken = `${speech.transcript} ${speech.interimTranscript}`.trim();
@@ -409,7 +448,7 @@ export function MockInterviewSession({
       }
       if (nextIndex < updatedQuestions.length) {
         setCurrentIndex(nextIndex);
-        setQPhase("asking");
+        setQPhase("answering");
         return;
       }
       try {
@@ -423,7 +462,7 @@ export function MockInterviewSession({
         setQuestions(withNext);
         questionsRef.current = withNext;
         setCurrentIndex(nextIndex);
-        setQPhase("asking");
+        setQPhase("answering");
       } catch {
         await finishInterview("We couldn't fetch the next question, so the session ended early.");
       }
@@ -565,10 +604,10 @@ export function MockInterviewSession({
                   )}
                 </div>
                 <p className="mt-3 font-display text-2xl font-semibold leading-snug text-cream">{current.question}</p>
-                {qPhase === "asking" && (
+                {ttsSpeaking && (
                   <p className="mt-3 inline-flex items-center gap-2 text-xs text-cream-faint">
                     <Sparkles className="h-3.5 w-3.5 text-mint" aria-hidden="true" />
-                    {voiceEnabled ? "Reading the question aloud…" : "Get ready…"}
+                    Reading the question aloud — you can start answering anytime
                   </p>
                 )}
               </>

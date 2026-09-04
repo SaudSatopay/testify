@@ -817,6 +817,10 @@ export interface Database {
         Args: Record<string, never>;
         Returns: Json;
       };
+      get_mcq_categories: {
+        Args: Record<string, never>;
+        Returns: Json;
+      };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;

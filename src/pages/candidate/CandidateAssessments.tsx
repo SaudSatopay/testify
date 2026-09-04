@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/table";
 import { useAsync } from "@/hooks/useAsync";
 import { useAuth } from "@/hooks/useAuth";
-import { DIFFICULTIES, MCQ_CATEGORIES, MCQ_COUNTS } from "@/lib/constants";
+import { DIFFICULTIES, MCQ_COUNTS } from "@/lib/constants";
 import { formatDateTime, formatDuration, formatScore, scoreTextClass } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { interviewService } from "@/services/interviewService";
@@ -38,7 +38,7 @@ export default function CandidateAssessments() {
   const navigate = useNavigate();
   const userId = user?.id ?? "";
 
-  const [category, setCategory] = useState<string>("JavaScript");
+  const [category, setCategory] = useState<string>("");
   const [difficulty, setDifficulty] = useState<string>("any");
   const [count, setCount] = useState<number>(10);
 
@@ -47,6 +47,7 @@ export default function CandidateAssessments() {
       Promise.all([
         mcqService.attemptsForCandidate(userId),
         interviewService.listForCandidate(userId),
+        mcqService.availableCategories(),
       ]),
     [userId],
   );
@@ -54,14 +55,17 @@ export default function CandidateAssessments() {
   if (loading) return <PageSkeleton />;
   if (error || !data) return <ErrorState message={error ?? undefined} onRetry={reload} />;
 
-  const [attempts, interviews] = data;
+  const [attempts, interviews, availableCategories] = data;
+  // Only offer categories that actually contain questions.
+  const effectiveCategory = category || availableCategories[0]?.category || "";
   const assignedMcqs = interviews.filter(
     (i) => i.type === "mcq" && (i.status === "scheduled" || i.status === "active"),
   );
   const completedAttempts = attempts.filter((a) => a.completed_at);
 
   const startPractice = () => {
-    const params = new URLSearchParams({ category, count: String(count) });
+    if (!effectiveCategory) return;
+    const params = new URLSearchParams({ category: effectiveCategory, count: String(count) });
     if (difficulty !== "any") params.set("difficulty", difficulty);
     navigate(`/candidate/mcq/practice?${params.toString()}`);
   };
@@ -113,18 +117,24 @@ export default function CandidateAssessments() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="mcq-category">Category</Label>
-              <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger id="mcq-category">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {MCQ_CATEGORIES.filter((c) => c !== "Custom").map((c) => (
-                    <SelectItem key={c} value={c}>
-                      {c}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {availableCategories.length === 0 ? (
+                <p className="rounded-lg border border-dashed border-foreground/25 px-3 py-2.5 text-sm text-muted-foreground">
+                  No MCQs in the question bank yet — ask an interviewer or admin to add some.
+                </p>
+              ) : (
+                <Select value={effectiveCategory} onValueChange={setCategory}>
+                  <SelectTrigger id="mcq-category">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableCategories.map((c) => (
+                      <SelectItem key={c.category} value={c.category}>
+                        {c.category} ({c.count} question{c.count === 1 ? "" : "s"})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="mcq-difficulty">Difficulty</Label>
@@ -166,7 +176,7 @@ export default function CandidateAssessments() {
               <Timer className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
               Time limit: {count} minutes (1 minute per question)
             </div>
-            <Button className="w-full" onClick={startPractice}>
+            <Button className="w-full" onClick={startPractice} disabled={!effectiveCategory}>
               Start assessment
             </Button>
           </CardContent>

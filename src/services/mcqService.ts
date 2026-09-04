@@ -125,4 +125,15 @@ export const mcqService = {
     if (error) throw new Error(error.message);
     return [...new Set((data ?? []).map((r) => r.category))].sort();
   },
+
+  /**
+   * Categories that actually contain questions, with counts — via a
+   * SECURITY DEFINER RPC, since candidates can't read mcq_questions
+   * directly (answer keys are RLS-protected).
+   */
+  async availableCategories(): Promise<Array<{ category: string; count: number }>> {
+    const { data, error } = await supabase.rpc("get_mcq_categories");
+    if (error) throw new Error(error.message);
+    return (data ?? []) as unknown as Array<{ category: string; count: number }>;
+  },
 };

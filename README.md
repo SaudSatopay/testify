@@ -1,77 +1,126 @@
-<p align="center">
-  <img src="https://img.shields.io/badge/Testify-6366F1?style=for-the-badge&logoColor=white" alt="Testify" />
-</p>
+<div align="center">
 
 # Testify
 
-**Smarter Interviews. Better Decisions.**
+### *Smarter Interviews. Better Decisions.*
 
-Testify is an AI-powered interview, assessment, mock-interview, and candidate-evaluation platform:
+An AI-powered interview, mock-interview, assessment & candidate-evaluation platform.
 
-- 🎯 **AI mock interviews** — adaptive questions for 14+ roles, with follow-ups that reference your previous answers, live transcription, and per-answer AI analysis
-- 🎥 **Live video interviews** — WebRTC video, screen sharing, synced questions, shared live transcript, interviewer notes and scoring
-- ✅ **MCQ assessments** — 16 categories, timed, mark-for-review, server-side scoring with explanations
-- 🧠 **AI analysis** — relevance, technical accuracy, communication, clarity, structure, speaking pace, filler words, and an honest, observable-signals-only confidence indicator
-- 📊 **Dashboards & reports** — role-based dashboards, progress charts, printable candidate reports
-- 🔐 **Security first** — Supabase Auth, Row Level Security on every table, server-side scoring, audited admin actions, consent-gated recording
+[**Live Demo →**](https://testify-rose.vercel.app)
 
-## Stack
+<img src="https://img.shields.io/badge/React_18-1a211a?style=for-the-badge&logo=react&logoColor=7EBD97" alt="React" />
+<img src="https://img.shields.io/badge/TypeScript-1a211a?style=for-the-badge&logo=typescript&logoColor=7EBD97" alt="TypeScript" />
+<img src="https://img.shields.io/badge/Vite-1a211a?style=for-the-badge&logo=vite&logoColor=7EBD97" alt="Vite" />
+<img src="https://img.shields.io/badge/Tailwind-1a211a?style=for-the-badge&logo=tailwindcss&logoColor=7EBD97" alt="Tailwind" />
+<img src="https://img.shields.io/badge/Supabase-1a211a?style=for-the-badge&logo=supabase&logoColor=7EBD97" alt="Supabase" />
+<img src="https://img.shields.io/badge/Vercel-1a211a?style=for-the-badge&logo=vercel&logoColor=7EBD97" alt="Vercel" />
 
-React 18 · TypeScript (strict) · Vite · Tailwind CSS · shadcn/ui-style components · Recharts ·
-Supabase (Auth, Postgres, Storage, Realtime, Edge Functions) · OpenAI/Anthropic (pluggable provider)
+<br/><br/>
 
-## Quick start
+<img src="docs/hero.png" alt="Testify landing page" width="900" />
+
+</div>
+
+---
+
+## What it does
+
+Testify runs the **entire interview loop** in one place — candidates practice against an adaptive AI interviewer, interviewers run structured live interviews with synchronized tooling, and teams get consistent, explainable reports.
+
+| 🎯 For candidates | 🎥 For interviewers | 🛡️ For admins |
+|---|---|---|
+| Adaptive AI mock interviews for 14+ roles | Live WebRTC interview rooms with screen share | Full user & role management |
+| Spoken answers with live transcription | Synced questions, live transcript, notes & scoring | Platform analytics dashboards |
+| Timed MCQ assessments with explanations | Question bank + MCQ bank with filters | Append-only audit logs |
+| Per-answer AI analysis & progress charts | One-click candidate invitations | Server-verified role changes |
+| Printable reports with verdict stamps | AI-aggregated or manual final results | Platform-wide settings |
+
+## How an interview flows
+
+```mermaid
+flowchart LR
+    A[Consent +\ndevice check] --> B[AI asks\nadaptive questions]
+    B --> C[Answer by voice\nor keyboard]
+    C --> D[Live\ntranscription]
+    D --> E[Per-answer AI analysis\n6 scored signals]
+    E --> F{More\nquestions?}
+    F -- yes, adapted\nto your answers --> B
+    F -- no --> G[Report, verdict\n& recommendations]
+```
+
+Every answer is scored 0–100 on **relevance, technical accuracy, communication, clarity, structure**, and a **confidence indicator** — an honest composite of observable signals (pace, filler words, hesitation), never a claim about psychology. Optional in-browser video analysis reports *observable* signals only (camera presence, approximate eye contact) and requires its own separate consent.
+
+## Architecture
+
+```
+React 18 + TypeScript + Vite ──► Supabase Auth (RLS-scoped JWT)
+        │                              │
+        │  supabase-js                 ▼
+        ├────────────────► PostgreSQL — 16 tables, 55+ RLS policies,
+        │                  SECURITY DEFINER RPCs (server-side MCQ scoring)
+        │
+        ├────────────────► Storage — 4 private/public buckets, path-scoped policies
+        │
+        ├────────────────► Realtime — presence, WebRTC signaling, live transcripts,
+        │                  proctoring event streams
+        │
+        └──► 9 Edge Functions (Deno) ──► pluggable AI provider
+             JWT verified in code        (any OpenAI-compatible API or Anthropic:
+             rate-limited, audited        OpenAI, Groq, Gemini, OpenRouter…)
+```
+
+**Security posture:** authorization lives in the database (Row Level Security on every table), MCQ answer keys never reach the browser before submission, admin mutations are re-verified server-side, all AI keys exist only as edge-function secrets, and recording never starts without explicit consent.
+
+## Tech stack
+
+- **Frontend** — React 18, TypeScript (strict), Vite, Tailwind CSS, Radix primitives, Recharts, WebRTC, Web Speech API
+- **Backend** — Supabase: Postgres + RLS, Auth, Storage, Realtime, Edge Functions (Deno)
+- **AI** — provider-agnostic: any OpenAI-compatible endpoint (`OPENAI_BASE_URL`) or Anthropic; Whisper-compatible transcription
+- **Design** — "Ink & Ledger": Fraunces + Archivo + JetBrains Mono, paper & ink palette, hard offset shadows, CVD-validated chart colors
+
+## Quickstart
 
 ```bash
-npm install
-cp .env.example .env       # fill in your Supabase URL + anon key
+git clone https://github.com/SaudSatopay/testify.git
+cd testify && npm install
+cp .env.example .env          # add your Supabase URL + anon key
 npm run dev
 ```
 
-Without a configured Supabase project the app renders a guided setup screen instead of breaking.
-**Full backend setup (database, storage, edge functions, secrets): see [SETUP.md](SETUP.md).**
+**Backend setup** (one-time): apply `supabase/migrations/*.sql` + `supabase/seed.sql` to a Supabase project, deploy the functions in `supabase/functions/`, and set the edge secrets:
 
-## Project layout
+| Secret | Purpose |
+|---|---|
+| `OPENAI_API_KEY` | AI provider key (OpenAI, Groq, Gemini, OpenRouter…) |
+| `OPENAI_BASE_URL` | optional — point at any OpenAI-compatible API |
+| `AI_MODEL` / `WHISPER_MODEL` | optional model overrides |
+| `APP_URL` | public URL used in invitation links |
+| `RESEND_API_KEY` | optional — emails interview invitations |
+
+The full step-by-step guide lives in [SETUP.md](SETUP.md). Without an AI key the platform still runs — MCQs, live interviews, and question-bank practice all work; AI features show an honest "not configured" state instead of fake results.
+
+## Project structure
 
 ```
 src/
-  components/     UI primitives (ui/), layout, interview room pieces, tables, editors, reports
-  pages/          public/ candidate/ interviewer/ admin/ route components (all lazy-loaded)
-  hooks/          auth, theme, media devices, speech recognition, assessment monitor, async data
-  services/       Supabase data services, edge-function API client, WebRTC, recording,
-                  modular VideoAnalysisService (browser implementation, provider-swappable)
-  integrations/   typed Supabase client + database definitions
-  lib/            constants, formatting, utilities
+├── pages/          public · candidate · interviewer · admin (lazy-loaded routes)
+├── components/     interview room, editors, tables, reports, ui primitives
+├── services/       data services, AI api client, WebRTC, recording,
+│                   swappable VideoAnalysisService
+├── hooks/          auth, media devices, speech recognition, proctoring
+└── integrations/   typed Supabase client
 supabase/
-  migrations/     schema, RLS policies, RPCs, storage buckets, realtime config
-  functions/      9 edge functions + shared modules (AI provider abstraction, auth, rate limiting)
-  seed.sql        30 interview questions + 20 MCQs of sample data
+├── migrations/     schema, RLS policies, RPCs, storage, realtime
+├── functions/      9 edge functions + shared AI provider abstraction
+└── seed.sql        30 interview questions + 20 MCQs
 ```
 
-## Roles
+---
 
-| Role | Registers via | Capabilities |
-|---|---|---|
-| Candidate | `/register` | practice AI mocks, take MCQs, join live interviews, view results & AI feedback |
-| Interviewer | `/register` | create/schedule interviews, question & MCQ banks, invite candidates, run live panels, score, reports |
-| Admin | SQL grant only | user management, all interviews/questions, analytics, audit logs, platform settings |
+<div align="center">
 
-The admin role can never be self-assigned — a database trigger coerces any requested role except
-`candidate`/`interviewer` back to `candidate`, and role changes go through a server-verified edge function.
+Built by **[Saud Satopay](https://github.com/SaudSatopay)**
 
-## AI ethics, honestly
+*No recording ever starts without consent. AI signals are decision support — never the decision.*
 
-- Recording requires explicit consent; video-signal analysis has a **separate, optional** consent.
-- Video analysis reports **observable signals only** (camera presence, approximate eye-contact
-  indicator, head movement) — provider prompts explicitly forbid inferring protected characteristics,
-  personality, honesty, or emotions.
-- The confidence indicator is labeled as an AI communication indicator, never a psychological measurement.
-- If no AI provider is configured, the app says so and degrades honestly — no fake results, ever.
-
-## Scripts
-
-| Command | Purpose |
-|---|---|
-| `npm run dev` | Vite dev server on http://localhost:5173 |
-| `npm run build` | strict type-check + production build |
-| `npm run preview` | preview the production build |
+</div>
