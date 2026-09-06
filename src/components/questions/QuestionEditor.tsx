@@ -141,7 +141,7 @@ export function QuestionEditor({ open, onOpenChange, question, createdBy, onSave
               <Label htmlFor="q-category">Category</Label>
               <Input
                 id="q-category"
-                placeholder="e.g. Backend Developer"
+                placeholder="e.g. Financial Analyst"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               />

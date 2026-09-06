@@ -10,7 +10,7 @@ export default function AIDisclosure() {
 
       <h2>What the AI analyzes</h2>
       <ul>
-        <li><strong>Answer content</strong> — relevance to the question, technical accuracy, clarity, and structure.</li>
+        <li><strong>Answer content</strong> — relevance to the question, subject accuracy, clarity, and structure.</li>
         <li><strong>Speech signals</strong> — speaking pace and filler-word frequency, derived from the transcript.</li>
         <li>
           <strong>Optional video signals</strong> (separate consent required) — camera presence, an approximate

@@ -37,7 +37,7 @@ export default function MockInterviewSetup() {
   const [params] = useSearchParams();
   const paramMode = params.get("mode");
 
-  const [jobRole, setJobRole] = useState<string>("Software Engineer");
+  const [jobRole, setJobRole] = useState<string>("Accountant");
   const [customRole, setCustomRole] = useState("");
   const [experience, setExperience] = useState<number>(2);
   const [mode, setMode] = useState<InterviewMode>(
@@ -154,7 +154,7 @@ export default function MockInterviewSetup() {
               <Label htmlFor="custom-role">Custom role name</Label>
               <Input
                 id="custom-role"
-                placeholder="e.g. Solutions Architect"
+                placeholder="e.g. Equity Research Analyst"
                 value={customRole}
                 onChange={(e) => setCustomRole(e.target.value)}
               />

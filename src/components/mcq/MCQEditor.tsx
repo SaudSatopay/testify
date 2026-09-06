@@ -51,7 +51,7 @@ export function MCQEditor({ open, onOpenChange, mcq, createdBy, onSaved }: MCQEd
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState({ a: "", b: "", c: "", d: "" });
   const [correct, setCorrect] = useState<"a" | "b" | "c" | "d">("a");
-  const [category, setCategory] = useState("JavaScript");
+  const [category, setCategory] = useState("Accountancy");
   const [customCategory, setCustomCategory] = useState("");
   const [difficulty, setDifficulty] = useState("medium");
   const [explanation, setExplanation] = useState("");
@@ -67,8 +67,8 @@ export function MCQEditor({ open, onOpenChange, mcq, createdBy, onSaved }: MCQEd
       d: mcq?.option_d ?? "",
     });
     setCorrect((mcq?.correct_option as "a" | "b" | "c" | "d") ?? "a");
-    const knownCategory = MCQ_CATEGORIES.includes((mcq?.category ?? "JavaScript") as (typeof MCQ_CATEGORIES)[number]);
-    setCategory(mcq ? (knownCategory ? mcq.category : "Custom") : "JavaScript");
+    const knownCategory = MCQ_CATEGORIES.includes((mcq?.category ?? "Accountancy") as (typeof MCQ_CATEGORIES)[number]);
+    setCategory(mcq ? (knownCategory ? mcq.category : "Custom") : "Accountancy");
     setCustomCategory(mcq && !knownCategory ? mcq.category : "");
     setDifficulty(mcq?.difficulty ?? "medium");
     setExplanation(mcq?.explanation ?? "");

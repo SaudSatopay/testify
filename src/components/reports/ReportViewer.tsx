@@ -35,7 +35,7 @@ export function ReportViewer({ report }: { report: ReportPayload }) {
   const analysisByResponse = new Map(analyses.filter((a) => a.response_id).map((a) => [a.response_id as string, a]));
 
   const dimensions = [
-    { label: "Technical", value: result?.technical_score ?? null },
+    { label: "Knowledge", value: result?.technical_score ?? null },
     { label: "Communication", value: result?.communication_score ?? null },
     { label: "Problem solving", value: result?.problem_solving_score ?? null },
     { label: "Behavioral", value: result?.behavioral_score ?? null },

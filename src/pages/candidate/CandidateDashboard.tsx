@@ -55,7 +55,7 @@ export default function CandidateDashboard() {
   const chartData: SeriesPoint[] = progress.map((r, i) => ({
     label: formatDate(r.created_at) === "—" ? `#${i + 1}` : formatDate(r.created_at),
     Overall: r.overall_score,
-    Technical: r.technical_score,
+    Knowledge: r.technical_score,
     Communication: r.communication_score,
     "Confidence indicator": r.confidence_score,
   }));
@@ -64,7 +64,7 @@ export default function CandidateDashboard() {
   const latest = progress[progress.length - 1];
   const weakest = latest
     ? ([
-        ["Technical", latest.technical_score, "technical"],
+        ["Subject knowledge", latest.technical_score, "technical"],
         ["Communication", latest.communication_score, "hr"],
         ["Behavioral", latest.behavioral_score, "behavioral"],
       ] as const)
@@ -130,7 +130,7 @@ export default function CandidateDashboard() {
                   data={chartData}
                   series={[
                     { key: "Overall", label: "Overall" },
-                    { key: "Technical", label: "Technical" },
+                    { key: "Knowledge", label: "Knowledge" },
                     { key: "Communication", label: "Communication" },
                     { key: "Confidence indicator", label: "Confidence indicator" },
                   ]}

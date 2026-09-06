@@ -56,7 +56,7 @@ export default function InterviewerDashboard() {
   const recentResults = results.slice(0, 12);
   const scoreBreakdown = [
     { label: "Overall", value: safeAverage(recentResults.map((r) => r.overall_score)) },
-    { label: "Technical", value: safeAverage(recentResults.map((r) => r.technical_score)) },
+    { label: "Knowledge", value: safeAverage(recentResults.map((r) => r.technical_score)) },
     { label: "Communication", value: safeAverage(recentResults.map((r) => r.communication_score)) },
     { label: "Problem solving", value: safeAverage(recentResults.map((r) => r.problem_solving_score)) },
     { label: "Behavioral", value: safeAverage(recentResults.map((r) => r.behavioral_score)) },

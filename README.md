@@ -4,7 +4,8 @@
 
 ### *Smarter Interviews. Better Decisions.*
 
-An AI-powered interview, mock-interview, assessment & candidate-evaluation platform.
+An AI-powered interview, mock-interview, assessment & candidate-evaluation platform
+**built for commerce careers** — accountancy, finance, economics, marketing, banking & management.
 
 [**Live Demo →**](https://testify-rose.vercel.app)
 
@@ -29,9 +30,9 @@ Testify runs the **entire interview loop** in one place — candidates practice 
 
 | 🎯 For candidates | 🎥 For interviewers | 🛡️ For admins |
 |---|---|---|
-| Adaptive AI mock interviews for 14+ roles | Live WebRTC interview rooms with screen share | Full user & role management |
+| Adaptive AI mock interviews for 15+ commerce roles | Live WebRTC interview rooms with screen share | Full user & role management |
 | Spoken answers with live transcription | Synced questions, live transcript, notes & scoring | Platform analytics dashboards |
-| Timed MCQ assessments with explanations | Question bank + MCQ bank with filters | Append-only audit logs |
+| Timed MCQs — accountancy, economics, tax & more | Question bank + MCQ bank with filters | Append-only audit logs |
 | Per-answer AI analysis & progress charts | One-click candidate invitations | Server-verified role changes |
 | Printable reports with verdict stamps | AI-aggregated or manual final results | Platform-wide settings |
 
@@ -114,7 +115,7 @@ src/
 supabase/
 ├── migrations/     schema, RLS policies, RPCs, storage, realtime
 ├── functions/      9 edge functions + shared AI provider abstraction
-└── seed.sql        30 interview questions + 20 MCQs
+└── seed.sql        36 interview questions + 48 commerce MCQs
 ```
 
 ---

@@ -69,7 +69,7 @@ export default function AdminAnalytics() {
 
   const dimensionData = [
     { label: "Overall", value: safeAverage(data.results.map((r) => r.overall_score)) },
-    { label: "Technical", value: safeAverage(data.results.map((r) => r.technical_score)) },
+    { label: "Knowledge", value: safeAverage(data.results.map((r) => r.technical_score)) },
     { label: "Communication", value: safeAverage(data.results.map((r) => r.communication_score)) },
     { label: "Problem solving", value: safeAverage(data.results.map((r) => r.problem_solving_score)) },
     { label: "Behavioral", value: safeAverage(data.results.map((r) => r.behavioral_score)) },

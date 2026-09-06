@@ -68,7 +68,7 @@ export function MockInterviewSession({
   onComplete,
 }: MockInterviewSessionProps) {
   const settings = useMemo(() => readInterviewSettings(interview.settings), [interview.settings]);
-  const jobRole = interview.job_role ?? "Software Engineer";
+  const jobRole = interview.job_role ?? "Accountant";
   const experienceYears = settings.experience_years ?? 2;
   const totalQuestions =
     settings.question_count ?? (preloadedQuestions.length > 0 ? preloadedQuestions.length : 5);

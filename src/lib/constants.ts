@@ -5,25 +5,28 @@ export const ROLES = ["candidate", "interviewer", "admin"] as const;
 export type Role = (typeof ROLES)[number];
 
 export const JOB_ROLES = [
-  "Software Engineer",
-  "Frontend Developer",
-  "Backend Developer",
-  "Full Stack Developer",
-  "Data Analyst",
-  "Data Scientist",
-  "DevOps Engineer",
-  "QA Engineer",
-  "Product Manager",
-  "UI/UX Designer",
-  "HR",
-  "Sales",
-  "Marketing",
+  "Accountant",
+  "Financial Analyst",
+  "Auditor",
+  "Tax Consultant",
+  "Investment Banker",
+  "Banking & Insurance",
+  "Marketing Executive",
+  "Sales Executive",
+  "Human Resources",
+  "Business Analyst",
+  "E-commerce Manager",
+  "Operations & Supply Chain",
+  "Company Secretary",
+  "Economist",
+  "Entrepreneur",
   "Custom Role",
 ] as const;
 
+// "technical" is the schema's internal value for subject/domain-knowledge rounds.
 export const INTERVIEW_MODES = [
   { value: "hr", label: "HR" },
-  { value: "technical", label: "Technical" },
+  { value: "technical", label: "Subject knowledge" },
   { value: "behavioral", label: "Behavioral" },
   { value: "mixed", label: "Mixed" },
 ] as const;
@@ -33,7 +36,7 @@ export const INTERVIEW_TYPES = [
   { value: "ai_mock", label: "AI Mock" },
   { value: "live", label: "Live" },
   { value: "mcq", label: "MCQ" },
-  { value: "technical", label: "Technical" },
+  { value: "technical", label: "Subject" },
   { value: "mixed", label: "Mixed" },
 ] as const;
 export type InterviewType = (typeof INTERVIEW_TYPES)[number]["value"];
@@ -49,28 +52,26 @@ export type Difficulty = (typeof DIFFICULTIES)[number]["value"];
 export const QUESTION_TYPES = [
   { value: "behavioral", label: "Behavioral" },
   { value: "hr", label: "HR" },
-  { value: "technical", label: "Technical" },
+  { value: "technical", label: "Subject knowledge" },
   { value: "situational", label: "Situational" },
-  { value: "coding", label: "Coding" },
+  { value: "coding", label: "Case study" },
   { value: "mcq", label: "MCQ" },
 ] as const;
 export type QuestionType = (typeof QUESTION_TYPES)[number]["value"];
 
 export const MCQ_CATEGORIES = [
-  "JavaScript",
-  "TypeScript",
-  "React",
-  "Python",
-  "Java",
-  "SQL",
-  "Data Structures",
-  "Algorithms",
+  "Accountancy",
+  "Business Studies",
+  "Economics",
+  "Finance",
+  "Marketing",
+  "Taxation",
+  "Banking",
+  "Auditing",
+  "Business Law",
+  "Statistics",
   "Aptitude",
   "Logical Reasoning",
-  "Networking",
-  "Operating Systems",
-  "DBMS",
-  "Cybersecurity",
   "HR",
   "Custom",
 ] as const;

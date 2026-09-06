@@ -3,6 +3,7 @@ import {
   ArrowRight,
   ArrowUpRight,
   BrainCircuit,
+  Calculator,
   FileBarChart,
   LayoutDashboard,
   ListChecks,
@@ -10,7 +11,6 @@ import {
   Menu,
   MonitorPlay,
   Sparkles,
-  TerminalSquare,
   Video,
 } from "lucide-react";
 
@@ -49,19 +49,19 @@ const FEATURES = [
     icon: ListChecks,
     title: "MCQ Assessments",
     description:
-      "Timed multiple-choice tests across 15+ categories with navigation, mark-for-review, server-side scoring, and instant explanations.",
+      "Timed multiple-choice tests across accountancy, business studies, economics, finance, and more — with mark-for-review, server-side scoring, and instant explanations.",
   },
   {
-    icon: TerminalSquare,
-    title: "Technical Assessments",
+    icon: Calculator,
+    title: "Subject Rounds",
     description:
-      "Technical and coding question rounds built from your question bank or generated on demand for any role and difficulty.",
+      "Accounting, finance, marketing, and business-case question rounds built from your question bank or generated on demand for any commerce role.",
   },
   {
     icon: BrainCircuit,
     title: "AI Interview Analysis",
     description:
-      "Every answer scored for relevance, technical accuracy, communication, clarity, and structure — with concrete recommendations.",
+      "Every answer scored for relevance, subject accuracy, communication, clarity, and structure — with concrete recommendations.",
   },
   {
     icon: FileBarChart,
@@ -101,14 +101,14 @@ const TESTIMONIALS = [
   },
   {
     quote:
-      "The mock interviews felt uncannily real. I practiced five nights in a row and walked into my on-site knowing exactly what to fix.",
-    name: "Placeholder — Frontend Engineer",
+      "The mock interviews felt uncannily real. I practiced five nights in a row and walked into my bank's final round knowing exactly what to fix.",
+    name: "Placeholder — Finance Graduate",
     org: "Hired via Testify practice",
   },
   {
     quote:
       "Transcripts plus per-question AI analysis cut our debrief time in half. The reports are what we forward to hiring committees.",
-    name: "Placeholder — Engineering Manager",
+    name: "Placeholder — Finance Manager",
     org: "Enterprise retail group",
   },
 ];
@@ -124,7 +124,7 @@ const FAQS = [
   },
   {
     q: "What does the AI actually analyze?",
-    a: "Observable communication signals: answer relevance, technical accuracy, clarity, structure, speaking pace, and filler words. The confidence indicator is a composite of these signals — it is not a psychological assessment, and Testify never infers protected characteristics.",
+    a: "Observable communication signals: answer relevance, subject accuracy, clarity, structure, speaking pace, and filler words. The confidence indicator is a composite of these signals — it is not a psychological assessment, and Testify never infers protected characteristics.",
   },
   {
     q: "Can interviewers use their own questions?",
@@ -141,15 +141,16 @@ const FAQS = [
 ];
 
 const MARQUEE_ITEMS = [
-  "Software Engineer", "Frontend", "Backend", "Full Stack", "Data Analyst", "Data Scientist",
-  "DevOps", "QA", "Product Manager", "UI/UX", "HR", "Sales", "Marketing",
+  "Accountant", "Financial Analyst", "Auditor", "Tax Consultant", "Investment Banking",
+  "Banking & Insurance", "Marketing", "Sales", "HR", "Business Analyst",
+  "E-commerce", "Operations", "Company Secretary", "Economist",
 ];
 
 /** Hand-typeset interview score sheet — the product, shown as a document. */
 function ScoreSheetMock() {
   const rows: Array<[string, number]> = [
     ["Relevance", 92],
-    ["Technical accuracy", 88],
+    ["Subject knowledge", 88],
     ["Communication", 84],
     ["Clarity", 74],
     ["Structure", 69],
@@ -161,8 +162,8 @@ function ScoreSheetMock() {
         <div className="flex items-start justify-between gap-4 border-b-2 border-foreground pb-4">
           <div>
             <p className="eyebrow text-muted-foreground">Interview record · No. 0047</p>
-            <p className="mt-1 font-display text-2xl font-bold">Aisha K. — Frontend Developer</p>
-            <p className="mt-0.5 text-sm text-muted-foreground">Technical round · 32 min · transcribed</p>
+            <p className="mt-1 font-display text-2xl font-bold">Aisha K. — Financial Analyst</p>
+            <p className="mt-0.5 text-sm text-muted-foreground">Finance round · 32 min · transcribed</p>
           </div>
           <LogoMark className="h-9 w-9 shrink-0" />
         </div>
@@ -180,8 +181,9 @@ function ScoreSheetMock() {
         <div className="mt-5 border-t border-foreground/20 pt-4">
           <p className="eyebrow text-muted-foreground">From the transcript</p>
           <p className="mt-1.5 font-display text-[15px] italic leading-relaxed text-foreground/90">
-            “…for expensive derived state I'd start with useMemo, but if the computation needs data we
-            already join on the server, I'd move it there and cache the response instead.”
+            “…I'd anchor the valuation on discounted cash flows, then sanity-check it against listed
+            peers — if the EV/EBITDA multiple diverges sharply from the sector, my assumptions are
+            usually the problem, not the market.”
           </p>
         </div>
 
@@ -281,8 +283,9 @@ export default function Landing() {
               </span>
             </h1>
             <p className="animate-fade-in-up animation-delay-200 mt-7 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Conduct smarter interviews, evaluate candidates consistently, and help candidates improve
-              with AI-powered interview analysis.
+              Built for commerce careers — accountancy, finance, economics, marketing, and management.
+              Practice with an AI interviewer, take timed assessments, and get consistent, explainable
+              evaluations.
             </p>
             <div className="animate-fade-in-up animation-delay-300 mt-9 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg">
@@ -304,8 +307,8 @@ export default function Landing() {
 
           <dl className="animate-fade-in-up animation-delay-700 mx-auto mt-16 grid max-w-4xl grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
             {[
-              ["14+", "Job roles covered"],
-              ["16", "Assessment categories"],
+              ["15+", "Commerce roles covered"],
+              ["13+", "Assessment categories"],
               ["6", "Signals per answer"],
               ["100%", "Consent-first recording"],
             ].map(([value, label]) => (

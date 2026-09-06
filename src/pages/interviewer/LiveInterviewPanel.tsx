@@ -527,7 +527,7 @@ export default function LiveInterviewPanel() {
               <div className="space-y-4 rounded-xl border border-room-line/80 bg-room-panel p-4">
                 {(
                   [
-                    ["technical", "Technical"],
+                    ["technical", "Knowledge"],
                     ["communication", "Communication"],
                     ["problem_solving", "Problem solving"],
                     ["behavioral", "Behavioral"],

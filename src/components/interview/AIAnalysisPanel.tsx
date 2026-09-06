@@ -70,7 +70,7 @@ export function AIAnalysisPanel({ analysis, className, compact = false }: AIAnal
 
       <div className={cn("mt-3 grid gap-x-6 gap-y-2.5", compact ? "grid-cols-1" : "sm:grid-cols-2")}>
         <MetricRow label="Relevance" value={analysis.relevance} />
-        <MetricRow label="Technical accuracy" value={analysis.technical_accuracy} />
+        <MetricRow label="Subject knowledge" value={analysis.technical_accuracy} />
         <MetricRow label="Communication" value={analysis.communication} />
         <MetricRow label="Clarity" value={analysis.clarity} />
         <MetricRow label="Structure" value={analysis.structure} />

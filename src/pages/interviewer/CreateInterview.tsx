@@ -56,7 +56,7 @@ export default function CreateInterview() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [candidateEmail, setCandidateEmail] = useState("");
-  const [jobRole, setJobRole] = useState<string>("Software Engineer");
+  const [jobRole, setJobRole] = useState<string>("Accountant");
   const [type, setType] = useState<InterviewType>("live");
   const [difficulty, setDifficulty] = useState<Difficulty>("medium");
   const [duration, setDuration] = useState(45);
@@ -66,7 +66,7 @@ export default function CreateInterview() {
   const [monitoring, setMonitoring] = useState(false);
   const [videoAnalysis, setVideoAnalysis] = useState(true);
   const [notesVisible, setNotesVisible] = useState(false);
-  const [mcqCategory, setMcqCategory] = useState<string>("JavaScript");
+  const [mcqCategory, setMcqCategory] = useState<string>("Accountancy");
   const [mcqCount, setMcqCount] = useState(20);
 
   // Questions
@@ -215,7 +215,7 @@ export default function CreateInterview() {
             <Label htmlFor="title">Title</Label>
             <Input
               id="title"
-              placeholder="e.g. Frontend Developer — Technical Round 1"
+              placeholder="e.g. Financial Analyst — Final Round"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />

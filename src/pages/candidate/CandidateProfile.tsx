@@ -188,7 +188,7 @@ export default function CandidateProfile() {
               <div className="flex gap-2">
                 <Input
                   id="skill-input"
-                  placeholder="e.g. React"
+                  placeholder="e.g. Tally"
                   value={skillInput}
                   onChange={(e) => setSkillInput(e.target.value)}
                   onKeyDown={(e) => {
